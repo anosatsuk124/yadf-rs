@@ -2,7 +2,8 @@ platform: !Linux Ubuntu
 package_manager: Apt
 shell: Fish
 packages: []
-dir: ./dotfiles
+in_dir: ./dotfiles
+out_dir: ./dotfiles/test
 exclude:
   - ./default.yaml
 

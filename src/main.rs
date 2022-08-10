@@ -6,6 +6,7 @@ use yadf::package_manager::PackageManager;
 use yadf::platform::Platform;
 use yadf::shell::{Shell, POSIX};
 use yadf::spec::Spec;
+use yadf::utils::{create_symlink, packages};
 
 const REPO_URL: &str = "https://github.com/anosatsuk124/yadf";
 
@@ -66,9 +67,10 @@ fn main() {
                 )
                 .unwrap(),
                 shell: Shell::POSIX(POSIX::Bash),
-                packages: vec![],
-                dir: PathBuf::new(),
-                exclude: vec![PathBuf::new()],
+                packages: None,
+                in_dir: PathBuf::new(),
+                out_dir: None,
+                exclude: None,
             })
         }
         _ => {
@@ -76,7 +78,16 @@ fn main() {
             println!("Use --help option to check the command usage.");
             None
         }
-    };
+    }
+    .unwrap();
 
-    println!("{:?}", spec);
+    if let Some(packages) = spec.packages {
+        packages::install_package(spec.package_manager, packages).unwrap();
+    }
+
+    if let Some(out_dir) = spec.out_dir {
+        create_symlink(&spec.in_dir, Some(&out_dir)).unwrap();
+    } else {
+        create_symlink(&spec.in_dir, None).unwrap();
+    }
 }

@@ -14,9 +14,10 @@ pub struct Spec {
     pub platform: Platform,
     pub package_manager: PackageManager,
     pub shell: Shell,
-    pub packages: Vec<String>,
-    pub dir: PathBuf,
-    pub exclude: Vec<PathBuf>,
+    pub packages: Option<Vec<String>>,
+    pub in_dir: PathBuf,
+    pub out_dir: Option<PathBuf>,
+    pub exclude: Option<Vec<PathBuf>>,
 }
 
 impl Spec {
