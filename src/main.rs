@@ -43,7 +43,8 @@ fn main() {
             .unwrap(),
         )),
         _ => {
-            eprintln!("There is no subcommands or options. Use --help option to check the command usage");
+            eprintln!("There is no subcommands or options.");
+            println!("Use --help option to check the command usage.");
             None
         },
     };
