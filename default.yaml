@@ -1,7 +1,6 @@
 platform: !Linux Ubuntu
 package_manager: Apt
 shell: Fish
-packages: []
 in_dir: ./dotfiles
 out_dir: ./dotfiles/test
 exclude:
