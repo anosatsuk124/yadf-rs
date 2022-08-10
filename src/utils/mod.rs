@@ -15,7 +15,7 @@ pub fn create_symlink(in_dir: &Path, out_dir: Option<&Path>) -> io::Result<()> {
                     out_dir
                         .unwrap_or(Path::new("~/"))
                         .join(format!(".{}", &entry.file_name().to_str().unwrap())),
-                )?;
+                ).unwrap_or(());;
             }
         }
         Ok(())
@@ -31,7 +31,7 @@ pub fn create_symlink(in_dir: &Path, out_dir: Option<&Path>) -> io::Result<()> {
                     out_dir
                         .unwrap_or(Path::new("~/"))
                         .join(format!(".{}", &entry.file_name().to_str().unwrap())),
-                )?;
+                ).unwrap_or(());
             }
         }
         Ok(())
