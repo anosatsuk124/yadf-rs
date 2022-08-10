@@ -2,7 +2,6 @@ use std::path::PathBuf;
 use std::{path::Path, str::FromStr};
 
 use clap::{Arg, Command};
-use yadf::package_manager::PackageManager;
 use yadf::platform::Platform;
 use yadf::shell::{Shell, POSIX};
 use yadf::spec::Spec;
@@ -60,12 +59,6 @@ fn main() {
                         .as_str(),
                 )
                 .unwrap(),
-                package_manager: PackageManager::from_str(
-                    args.get_one::<String>("package_manager")
-                        .expect("A package_manager option is required.")
-                        .as_str(),
-                )
-                .unwrap(),
                 shell: Shell::POSIX(POSIX::Bash),
                 packages: None,
                 in_dir: PathBuf::new(),
@@ -82,7 +75,7 @@ fn main() {
     .unwrap();
 
     if let Some(packages) = spec.packages {
-        packages::install_package(spec.package_manager, packages).unwrap();
+        packages::install_package(packages).unwrap();
     }
 
     if let Some(out_dir) = spec.out_dir {

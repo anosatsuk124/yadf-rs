@@ -12,9 +12,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Spec {
     pub platform: Platform,
-    pub package_manager: PackageManager,
     pub shell: Shell,
-    pub packages: Option<Vec<String>>,
+    pub packages: Option<Vec<(PackageManager, String)>>,
     pub in_dir: PathBuf,
     pub out_dir: Option<PathBuf>,
     pub exclude: Option<Vec<PathBuf>>,

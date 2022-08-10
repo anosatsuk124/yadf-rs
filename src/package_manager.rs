@@ -8,6 +8,14 @@ pub enum PackageManager {
     Nix,
     Scoop,
     Winget,
+    Snap(Vec<SnapOption>),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum SnapOption {
+    Edge,
+    Beta,
+    Classic,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -23,7 +31,19 @@ impl FromStr for PackageManager {
             "nix" => Ok(Self::Nix),
             "scoop" => Ok(Self::Scoop),
             "winget" => Ok(Self::Winget),
+            "snap" => Ok(Self::Snap(Vec::new())),
             _ => Err(UnknownPackageManagerError),
         }
     }
 }
+
+impl ToString for SnapOption {
+    fn to_string(&self) -> String {
+        match self {
+            Self::Classic => String::from("--classic"),
+            Self::Edge => String::from("--edge"),
+            Self::Beta => String::from("--beta"),
+        }
+    }
+}
+
