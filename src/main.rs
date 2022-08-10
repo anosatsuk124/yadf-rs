@@ -42,7 +42,10 @@ fn main() {
             )
             .unwrap(),
         )),
-        _ => None,
+        _ => {
+            eprintln!("There is no subcommands or options. Use --help option to check the command usage");
+            None
+        },
     };
 
     println!("{:?}", spec);
