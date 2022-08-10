@@ -1,0 +1,8 @@
+platform: !Linux Ubuntu
+package_manager: Apt
+shell: Fish
+packages: []
+dir: ./dotfiles
+exclude:
+  - ./default.yaml
+

@@ -1,13 +1,14 @@
+use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Platform {
     OSX,
     Linux(LinuxDistro),
     Windows,
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum LinuxDistro {
     Ubuntu,
     Debian,
