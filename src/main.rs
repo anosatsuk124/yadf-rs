@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use std::{path::Path, str::FromStr};
 
-use clap::{Arg, Command};
+use clap::{Arg, ArgAction, Command};
 use yadf::platform::Platform;
 use yadf::shell::{Shell, POSIX};
 use yadf::spec::Spec;
@@ -29,23 +29,32 @@ fn main() {
                         .short('m')
                         .long("manager")
                         .required(true),
-                ),
+                )
+                .arg(Arg::new("force").long("force").action(ArgAction::SetTrue)),
         )
         .subcommand(
-            Command::new("yaml").arg(
-                Arg::new("file")
-                    .value_name("FILE")
-                    .short('f')
-                    .long("file")
-                    .required(true),
-            ),
+            Command::new("yaml")
+                .arg(
+                    Arg::new("file")
+                        .value_name("FILE")
+                        .short('f')
+                        .long("file")
+                        .required(true),
+                )
+                .arg(Arg::new("force").long("force").action(ArgAction::SetTrue)),
         );
     let spec = match cli.get_matches().subcommand() {
-        Some(("yaml", args)) => Some(Spec::parse_yaml(Path::new(
-            &args
-                .get_one::<String>("file")
-                .expect("A spec file is required."),
-        ))),
+        Some(("yaml", args)) => {
+            let mut spec = Spec::parse_yaml(Path::new(
+                &args
+                    .get_one::<String>("file")
+                    .expect("A spec file is required."),
+            ));
+            if args.is_present("force") {
+                spec.force = true;
+            }
+            Some(spec)
+        }
         Some(("cli", args)) => {
             eprintln!("This feature is not implemented. Please use other subcommands.");
             println!(
@@ -64,6 +73,7 @@ fn main() {
                 in_dir: PathBuf::new(),
                 out_dir: None,
                 exclude: None,
+                force: args.is_present("force"),
             })
         }
         _ => {
@@ -79,8 +89,8 @@ fn main() {
     }
 
     if let Some(out_dir) = spec.out_dir {
-        create_symlink(&spec.in_dir, Some(&out_dir)).unwrap();
+        create_symlink(&spec.in_dir, Some(&out_dir), spec.force).unwrap();
     } else {
-        create_symlink(&spec.in_dir, None).unwrap();
+        create_symlink(&spec.in_dir, None, spec.force).unwrap();
     }
 }

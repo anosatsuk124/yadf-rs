@@ -17,6 +17,8 @@ pub struct Spec {
     pub in_dir: PathBuf,
     pub out_dir: Option<PathBuf>,
     pub exclude: Option<Vec<PathBuf>>,
+    #[serde(default)]
+    pub force: bool,
 }
 
 impl Spec {
